@@ -11,9 +11,9 @@ namespace AzureBlobSasToken
 {
     class Program
     {
-        static string storageConnectionString = "";
-        static string containerName = "";
-
+        static string storageConnectionString = "yourStorageConnectionString";
+        static string containerName = "yourPrivateContainerName";
+        static int sasTokenExpireTime = 1;
         /*
             HOW TO ACCESS PRIVATE CONTAINER IN AZURE BLOB SERVICE?
         */
@@ -36,7 +36,7 @@ namespace AzureBlobSasToken
                 Permissions = SharedAccessAccountPermissions.Read | SharedAccessAccountPermissions.List,
                 Services = SharedAccessAccountServices.Blob | SharedAccessAccountServices.File,
                 ResourceTypes = SharedAccessAccountResourceTypes.Container | SharedAccessAccountResourceTypes.Service | SharedAccessAccountResourceTypes.Object,
-                SharedAccessExpiryTime = DateTime.UtcNow.AddHours(1),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddHours(sasTokenExpireTime), //Token ExpireTime is sasTokenExpireTime hour
                 Protocols = SharedAccessProtocol.HttpsOnly
             };
             
@@ -63,7 +63,7 @@ namespace AzureBlobSasToken
         {
             SharedAccessBlobPolicy sasConstraints = new SharedAccessBlobPolicy();
             sasConstraints.SharedAccessStartTime = DateTimeOffset.UtcNow;
-            sasConstraints.SharedAccessExpiryTime = DateTimeOffset.UtcNow.AddHours(1);
+            sasConstraints.SharedAccessExpiryTime = DateTimeOffset.UtcNow.AddHours(sasTokenExpireTime); //Token ExpireTime is sasTokenExpireTime hour
             sasConstraints.Permissions = SharedAccessBlobPermissions.Read | SharedAccessBlobPermissions.List;
 
             //Generate the shared access signature on the blob, setting the constraints directly on the signature.
